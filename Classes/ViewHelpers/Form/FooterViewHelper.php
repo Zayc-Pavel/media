@@ -11,7 +11,7 @@ namespace Fab\Media\ViewHelpers\Form;
 
 use Fab\Vidi\Service\DataService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Exception;
+use TYPO3Fluid\Fluid\Exception;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;

@@ -97,7 +97,7 @@ class MissingFilesFinderTool extends AbstractTool
 
             /** @var \TYPO3\CMS\Core\Resource\File $file */
             try {
-                $file = ResourceFactory::getInstance()->getFileObject($fileUid);
+                $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject($fileUid);
                 if ($file) {
                     // The case is special as we have a missing file in the file system
                     // As a result, we can't use $fileObject->delete(); which will

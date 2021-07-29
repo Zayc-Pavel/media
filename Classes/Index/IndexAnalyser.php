@@ -46,7 +46,7 @@ class IndexAnalyser implements SingletonInterface
 
             // This task is very memory consuming on large data set e.g > 20'000 records.
             // We must think of having a pagination if there is the need for such thing.
-            $file = ResourceFactory::getInstance()->getFileObject($row['uid'], $row);
+            $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject($row['uid'], $row);
             if (!$file->exists()) {
                 $missingFiles[] = $file;
             }

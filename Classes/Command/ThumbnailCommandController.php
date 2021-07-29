@@ -11,14 +11,14 @@ namespace Fab\Media\Command;
 
 use Fab\Media\Property\TypeConverter\ConfigurationArrayConverter;
 use Fab\Vidi\Service\DataService;
+use Symfony\Component\Console\Command\Command;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
 
 /**
  * Command Controller which handles CLI action related to Thumbnails.
  */
-class ThumbnailCommandController extends CommandController
+class ThumbnailCommandController extends Command
 {
 
     /**

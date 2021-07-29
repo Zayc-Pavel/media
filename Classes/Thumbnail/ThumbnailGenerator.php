@@ -100,7 +100,7 @@ class ThumbnailGenerator
         foreach ($rows as $row) {
 
 
-            $file = ResourceFactory::getInstance()->getFileObject($row['uid'], $row);
+            $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject($row['uid'], $row);
 
             if ($file->exists()) {
 

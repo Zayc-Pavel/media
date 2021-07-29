@@ -66,6 +66,7 @@ class FilePermissionsAspect
                     $identifier = $storage->getUid();
                 }
 
+                /*
                 if ($this->getModuleLoader()->hasPlugin() && !$this->getCurrentBackendUser()->isAdmin()) {
 
                     $fileMounts = $this->getCurrentBackendUser()->getFileMountRecords();
@@ -81,6 +82,7 @@ class FilePermissionsAspect
 
                     $matcher->in('uid', $collectedFiles);
                 }
+                */
 
                 $matcher->equals('storage', $identifier);
             }

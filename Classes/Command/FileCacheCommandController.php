@@ -10,6 +10,7 @@ namespace Fab\Media\Command;
 
 use Fab\Vidi\Service\DataService;
 use FilesystemIterator;
+use Symfony\Component\Console\Command\Command;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -17,12 +18,11 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
 
 /**
  * Command Controller which handles actions related to the Cache.
  */
-class FileCacheCommandController extends CommandController
+class FileCacheCommandController extends Command
 {
 
     /**

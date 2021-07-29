@@ -8,14 +8,14 @@ namespace Fab\Media\Command;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use Symfony\Component\Console\Command\Command;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
 
 /**
  * Command Controller which handles actions related to duplicate Files.
  */
-class DuplicateFilesCommandController extends CommandController
+class DuplicateFilesCommandController extends Command
 {
 
     /**

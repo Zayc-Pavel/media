@@ -33,7 +33,7 @@ class StorageValidator extends AbstractValidator
             $allowedStorageIdentifiers[] = $allowedStorage->getUid();
         }
 
-        $storage = ResourceFactory::getInstance()->getStorageObjectFromCombinedIdentifier($combinedIdentifier);
+        $storage = GeneralUtility::makeInstance(ResourceFactory::class)->getStorageObjectFromCombinedIdentifier($combinedIdentifier);
         if (!in_array($storage->getUid(), $allowedStorageIdentifiers)) {
             $message = sprintf('Storage identifier "%s" is not allowed or is currently off-line.', $combinedIdentifier);
             $this->addError($message, 1380813503);

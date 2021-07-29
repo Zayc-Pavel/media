@@ -82,7 +82,7 @@ EOF;
 
         // Instantiate the file object for the whole class if possible.
         if ($this->getValue()) {
-            $this->file = ResourceFactory::getInstance()->getFileObject($this->getValue());
+            $this->file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject($this->getValue());
         }
 
         $result = sprintf(

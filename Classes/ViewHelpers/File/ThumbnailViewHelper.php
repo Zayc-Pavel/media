@@ -56,7 +56,7 @@ class ThumbnailViewHelper extends AbstractViewHelper
         if ($file instanceof Content) {
             $file = $this->getFileConverter()->convert($file);
         } elseif (!($file instanceof File)) {
-            $file = ResourceFactory::getInstance()->getFileObject((int)$file);
+            $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject((int)$file);
         }
         if ($preset) {
             $imageDimension = ImagePresetUtility::getInstance()->preset($preset);

@@ -85,13 +85,13 @@ class MediaModule implements SingletonInterface
             $storageIdentifier = $this->getStorageIdentifierFromSessionOrArguments();
 
             if ($storageIdentifier > 0) {
-                $currentStorage = ResourceFactory::getInstance()->getStorageObject($storageIdentifier);
+                $currentStorage = GeneralUtility::makeInstance(ResourceFactory::class)->getStorageObject($storageIdentifier);
             } else {
 
                 // We differentiate the cases whether the User is admin or not.
                 if ($this->getBackendUser()->isAdmin()) {
 
-                    $currentStorage = ResourceFactory::getInstance()->getDefaultStorage();
+                    $currentStorage = GeneralUtility::makeInstance(ResourceFactory::class)->getDefaultStorage();
 
                     // Not default storage has been flagged in "sys_file_storage".
                     // Fallback approach: take the first storage as the current.
@@ -105,7 +105,7 @@ class MediaModule implements SingletonInterface
                 } else {
                     $fileMounts = $this->getBackendUser()->getFileMountRecords();
                     $firstFileMount = current($fileMounts);
-                    $currentStorage = ResourceFactory::getInstance()->getStorageObject($firstFileMount['base']);
+                    $currentStorage = GeneralUtility::makeInstance(ResourceFactory::class)->getStorageObject($firstFileMount['base']);
                 }
             }
 
@@ -221,19 +221,19 @@ class MediaModule implements SingletonInterface
     {
 
         // Code taken from FileListController.php
-        $storage = ResourceFactory::getInstance()->getStorageObjectFromCombinedIdentifier($combinedIdentifier);
+        $storage = GeneralUtility::makeInstance(ResourceFactory::class)->getStorageObjectFromCombinedIdentifier($combinedIdentifier);
         $identifier = substr($combinedIdentifier, strpos($combinedIdentifier, ':') + 1);
         if (!$storage->hasFolder($identifier)) {
             $identifier = $storage->getFolderIdentifierFromFileIdentifier($identifier);
         }
 
         // Retrieve the folder object.
-        $folder = ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier($storage->getUid() . ':' . $identifier);
+        $folder = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier($storage->getUid() . ':' . $identifier);
 
         // Disallow the rendering of the processing folder (e.g. could be called manually)
         // and all folders without any defined storage
         if ($folder && ($folder->getStorage()->getUid() == 0 || trim($folder->getStorage()->getProcessingFolder()->getIdentifier(), '/') === trim($folder->getIdentifier(), '/'))) {
-            $storage = ResourceFactory::getInstance()->getStorageObjectFromCombinedIdentifier($combinedIdentifier);
+            $storage = GeneralUtility::makeInstance(ResourceFactory::class)->getStorageObjectFromCombinedIdentifier($combinedIdentifier);
             $folder = $storage->getRootLevelFolder();
         }
 
@@ -283,10 +283,19 @@ class MediaModule implements SingletonInterface
         // default is the root level
         $folder = $storage->getRootLevelFolder(); // get the root folder by default
 
+        $userUploadFolderNotFound = true;
+        // Get user upload folder only if configured in user TSconfig.
+        $userUploadFolder = $this->getBackendUser()->getTSConfigVal('options.defaultUploadFolder');
+        if ($userUploadFolder) {
+            $folder = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier($userUploadFolder);
+            $userUploadFolderNotFound = false;
+        }
+
         // Get a possible mount point coming from the storage record.
         $storageRecord = $storage->getStorageRecord();
         $mountPointIdentifier = $storageRecord['mount_point_file_type_' . $uploadedFile->getType()];
-        if ($mountPointIdentifier > 0) {
+        // Only use the defined folder for the uploaded file type if the user has no configured upload folder.
+        if ($userUploadFolderNotFound && $mountPointIdentifier > 0) {
 
             // We don't have a Mount Point repository in FAL, so query the database directly.
             $record = $this->getDataService()->getRecord('sys_filemounts', ['uid' => $mountPointIdentifier]);
