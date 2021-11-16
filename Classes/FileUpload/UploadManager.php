@@ -217,26 +217,23 @@ class UploadManager
         if ($isAllowed) {
             $fileInfo = GeneralUtility::split_fileref($fileName);
             // Set up the permissions for the file extension
-            $fileExtensionPermissions = $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']['webspace'];
-            $fileExtensionPermissions['allow'] = GeneralUtility::uniqueList(strtolower($fileExtensionPermissions['allow']));
-            $fileExtensionPermissions['deny'] = GeneralUtility::uniqueList(strtolower($fileExtensionPermissions['deny']));
             $fileExtension = strtolower($fileInfo['fileext']);
             if ($fileExtension !== '') {
                 // If the extension is found amongst the allowed types, we return true immediately
-                if ($fileExtensionPermissions['allow'] === '*' || GeneralUtility::inList($fileExtensionPermissions['allow'], $fileExtension)) {
+                if (isset($GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'])) {
                     return true;
                 }
                 // If the extension is found amongst the denied types, we return false immediately
-                if ($fileExtensionPermissions['deny'] === '*' || GeneralUtility::inList($fileExtensionPermissions['deny'], $fileExtension)) {
+                if (!isset($GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'])) {
                     return false;
                 }
                 // If no match we return true
                 return true;
             } else {
-                if ($fileExtensionPermissions['allow'] === '*') {
+                if (isset($GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'])) {
                     return true;
                 }
-                if ($fileExtensionPermissions['deny'] === '*') {
+                if (!isset($GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'])) {
                     return false;
                 }
                 return true;

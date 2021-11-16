@@ -285,7 +285,7 @@ class MediaModule implements SingletonInterface
 
         $userUploadFolderNotFound = true;
         // Get user upload folder only if configured in user TSconfig.
-        $userUploadFolder = $this->getBackendUser()->getTSConfigVal('options.defaultUploadFolder');
+        $userUploadFolder = $this->getBackendUser()->getTSConfig()['options.']['defaultUploadFolder'];
         if ($userUploadFolder) {
             $folder = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier($userUploadFolder);
             $userUploadFolderNotFound = false;

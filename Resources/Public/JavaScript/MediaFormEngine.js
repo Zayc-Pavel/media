@@ -8,17 +8,11 @@
 // add legacy functions to be accessible in the global scope
 var setFormValueOpenBrowser;
 
-define('TYPO3/CMS/Media/MediaFormEngine', ['jquery', 'TYPO3/CMS/Backend/FormEngine'], function($) {
+define('TYPO3/CMS/Media/MediaFormEngine', ['jquery', 'TYPO3/CMS/Backend/FormEngine'], function($, FormEngine) {
 
 	var MediaFormEngine = {};
 
-	// main options
-	var FormEngine = {
-		formName: TYPO3.settings.FormEngine.formName
-		,backPath: TYPO3.settings.FormEngine.backPath || ''
-		,openedPopupWindow: null
-		,legacyFieldChangedCb: function() { !$.isFunction(TYPO3.settings.FormEngine.legacyFieldChangedCb) || TYPO3.settings.FormEngine.legacyFieldChangedCb(); }
-	};
+	console.log(FormEngine.openPopupWindow);
 
 	/**
 	 * opens a popup window with the element browser (browser.php)
@@ -30,10 +24,10 @@ define('TYPO3/CMS/Media/MediaFormEngine', ['jquery', 'TYPO3/CMS/Backend/FormEngi
 		var url;
 
 		// Open the Media Picker if we encounter an inline segment in the params -> file to be selected.
-		if (params.search(/inline\./) > -1) {
+		if (true /*params.search(/inline\./) > -1*/) {
 
 			// An additional filter could be applied if required "&prefix[matches][type]=2"
-			url = FormEngine.backPath + MediaFormEngine.vidiModuleUrl + '&' + MediaFormEngine.vidiModulePrefix + '[plugins][]=filePicker&params=' + params;
+			url = (TYPO3.settings.FormEngine.backPath || '') + MediaFormEngine.vidiModuleUrl + '&' + MediaFormEngine.vidiModulePrefix + '[plugins][]=filePicker&params=' + params;
 
 			//var name = "File Picker"; // Commented since IE compatibility issue. Weird!
 			var dimensions = {
